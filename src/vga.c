@@ -1,4 +1,17 @@
 #include "vga.h"
+static unsigned short lfsr = 0xACE1u;
+unsigned short bit;
+
+static const unsigned int VGA_WIDTH = 80;
+static const unsigned int VGA_HEIGHT = 25;
+
+static unsigned short fb_cursor_x = 0, fb_cursor_y = 0;
+static unsigned int fb_current_loc = 0;
+
+unsigned int term_row;
+unsigned int term_column;
+unsigned char term_color;
+unsigned short* term_buffer;
 
 static inline unsigned char make_color(enum vga_color fg, enum vga_color bg)
 {
