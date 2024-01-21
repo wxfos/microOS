@@ -7,12 +7,12 @@ It can be easily run under qemu / burn on a usb and test it on bare metal.
 For Qemu:
 
 ```sh
-    qemu-system-i386 -cdrom microOS.iso
+    qemu-system-x86_64 -cdrom microOS.iso
 ```
 
 or,
 
 ```sh
-    qemu-system-i386 -kernel microOS.bin
+    qemu-system-x86_64 -kernel microOS.bin
 ```
 
