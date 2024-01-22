@@ -22,8 +22,9 @@ void idt_init(void)
 	uint32 idt_addr;
 	uint32 idt_ptr[2];
 
-//	init_pit(100);
-//	idt_set(0x20, timer_interrupt);
+	// for(int i=0;i<IDT_SIZE;i++)idt_set(i, timer_interrupt);
+
+	idt_set(0x20, timer_interrupt);
 	idt_set(0x21, kbd_interrupt);
 
 	/* fill the IDT descriptor */
@@ -32,6 +33,7 @@ void idt_init(void)
 	idt_ptr[1] = idt_addr >> 16 ;
 
 	load_idt(idt_ptr);
+	init_pit(1000);
 
 }
 
@@ -72,16 +74,23 @@ void load_idt(uint32 *idt_ptr){
     );
 }
 
-
+#define PIC1_DATA_PORT 0x21
+#define PIT_COMMAND_PORT 0x43
+#define PIT_DATA_PORT 0x40
 void init_pit(uint16 frequency) {
     uint16 divisor = 1193180 / frequency;  // 计算频率分频因子
 
-    // 发送命令字节到0x43端口
-    write_port(0x43, 0x36); // 0x36表示二进制计数器，发送高字节/低字节，模式3
+    // write_port(PIT_COMMAND_PORT, 0x36); 	// 0x36表示二进制计数器，发送高字节/低字节，模式3
+    // write_port(PIT_DATA_PORT, (uint8)(divisor & 0xFF));    // 低字节
+    // write_port(PIT_DATA_PORT, (uint8)(divisor >> 8));      // 高字节
 
-    // 分别发送分频因子的低字节和高字节到0x40端口
-    write_port(0x40, (uint8)(divisor & 0xFF));    // 低字节
-    write_port(0x40, (uint8)(divisor >> 8));      // 高字节
+	int i = 1193180000 / frequency;
+	write_port(0x43, 0xb6);
+	write_port(0x42, i & 0xff);
+	write_port(0x42, i >> 8);
+	// i = io_in8(0x61);
+	// io_out8(0x61, (i | 0x03) & 0x0f);
+
 }
 void reverse(char str[], int length) {
     int start = 0;
@@ -124,16 +133,25 @@ char* itoa(char* str, int num, int base) {
 }
 
 int count = 0;
-void timer_interrupt() {
+void timer_interrup_handler() {
 	count ++;
     if(count % 1000 == 0){
 		uint16 x,y;
 		char buf[16];
 		itoa(buf, count, 10);
-		get_cursor(&x,&y);
-		set_cursor(0, 0);
-		print(buf);
-		set_cursor(x,y);
+		for(int i=0;i<sizeof(buf) && buf[i];i++)
+			term_putentryat(buf[i], COLOR_GREEN, i, 0);
 	}
 }
+void timer_interrupt(){
+	static char _ch = '0';
+	write_port(PIC1_COMMAND_PORT, 0x60); /* 把IRQ-00接收信号结束的信息通知给PIC */
+
+	term_putentryat(_ch, COLOR_LIGHT_GREEN, 0, 0);
+	timer_interrup_handler();
+	_ch++;
+	if(_ch>0x7e)_ch='0';
+	iret;
+}
+
 

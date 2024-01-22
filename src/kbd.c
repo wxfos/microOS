@@ -39,9 +39,6 @@ static uint8 kbd_map[128] =
 
 void kbd_init(void)
 {
-	uint32 idt_addr;
-	uint32 idt_ptr[2];
-
 	/* ICW1 - begin initialization */
 	write_port(PIC1_COMMAND_PORT , 0x11);
 	write_port(PIC2_COMMAND_PORT , 0x11);
@@ -67,11 +64,10 @@ void kbd_init(void)
 	write_port(PIC1_DATA_PORT , 0xff);
 	write_port(PIC2_DATA_PORT , 0xff);
 
-
 	/* 0xFD is 11111101 - enables only IRQ1 (keyboard)*/
 	// write_port(PIC1_DATA_PORT , 0xFD);
-	write_port(PIC1_DATA_PORT , 0xFD);
-	// write_port(PIC1_DATA_PORT, read_port(PIC1_DATA_PORT) & 0xFE);
+	write_port(PIC1_DATA_PORT , 0xFC);
+	//write_port(PIC1_DATA_PORT, read_port(PIC1_DATA_PORT) & 0xFE);
 }
 
 void kbd_interrupt_handler(void)
