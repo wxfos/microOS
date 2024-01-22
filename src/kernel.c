@@ -3,9 +3,10 @@
 
 void kernel(void)
 {
-
 	init_term();
-	write("\t\t\t\tWelcome to microOS!!!\nroot@kernel# ");
+
+	print("\t\t\t\tWelcome to microOS!!!\n");
+	print("root@kernel# ");
 
 	idt_init();
 	kbd_init();

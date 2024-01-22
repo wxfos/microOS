@@ -9,28 +9,28 @@ global outb
 extern kbd_main
 
 read_port:
-	mov	edx, [esp + 4]
-	in	al, dx
+	mov		edx, [esp + 4]
+	in		al, dx
 	ret
 
 write_port:
-	mov	edx, [esp + 4]    
-	mov	al, [esp + 4 + 4]  
-	out	dx, al  
+	mov		edx, [esp + 4]
+	mov		al, [esp + 4 + 4]
+	out		dx, al
 	ret
 
 load_idt:
-	mov	edx, [esp + 4]
+	mov		edx, [esp + 4]
 	lidt	[edx]
 	sti
 	ret
 
-kbd_handler:                 
-	call  kbd_main
+kbd_handler:
+	call	kbd_main
 	iretd
 
 outb:
-  mov al, [esp + 8]
-  mov dx, [esp + 4]
-  out dx, al
-  ret
+	mov al, [esp + 8]
+	mov dx, [esp + 4]
+	out dx, al
+	ret

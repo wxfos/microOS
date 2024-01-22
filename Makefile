@@ -10,10 +10,10 @@ all: dirs boot kernel
 	$(STRIP) bin/microOS.bin
 
 dirs:
-	if [ ! -d obj ]; then \
+	@if [ ! -d obj ]; then \
 		mkdir obj;\
 	fi
-	if [ ! -d bin ]; then \
+	@if [ ! -d bin ]; then \
 		mkdir bin;\
 	fi
 
