@@ -17,7 +17,9 @@
 
 extern char read_port(uint16 port);
 extern void write_port(uint16 port, uint8 data);
-extern void outb(uint16 port, uint16 value);
+extern void write_port16(uint16 port, uint16 data);
+extern void write_port32(uint16 port, uint32 data);
+//extern void outb(uint16 port, uint16 value);
 
 
 #endif

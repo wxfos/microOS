@@ -35,6 +35,7 @@ void term_putchar(char c);
 void term_writestring(const char* data);
 void print(const char* str);
 void move_cursor(uint16 pos);
-void set_cursor(uint32 x, uint32 y);
+void set_cursor(uint16 x, uint16 y);
+void get_cursor(uint16 *x, uint16 *y);
 
 #endif

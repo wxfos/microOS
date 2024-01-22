@@ -137,16 +137,21 @@ void print(const char* str)
 
 void move_cursor(uint16 pos)
 {
-    outb (FB_COMMAND_PORT, FB_HIGH_BYTE_COMMAND);
-    outb (FB_DATA_PORT,    ((pos >> 8) & 0x00FF));
-    outb (FB_COMMAND_PORT, FB_LOW_BYTE_COMMAND);
-    outb (FB_DATA_PORT,    pos & 0x00FF);
+    write_port (FB_COMMAND_PORT, FB_HIGH_BYTE_COMMAND);
+    write_port (FB_DATA_PORT,    ((pos >> 8) & 0x00FF));
+    write_port (FB_COMMAND_PORT, FB_LOW_BYTE_COMMAND);
+    write_port (FB_DATA_PORT,    pos & 0x00FF);
 }
 
-void set_cursor(uint32 x, uint32 y)
+void set_cursor(uint16 x, uint16 y)
 {
     move_cursor(y * VGA_WIDTH + x);
     
     fb_cursor_x = x;
     fb_cursor_y = y;
+}
+void get_cursor(uint16 *x, uint16 *y)
+{    
+    *x = fb_cursor_x;
+    *y = fb_cursor_y;
 }
