@@ -153,5 +153,14 @@ void timer_interrupt(){
 	if(_ch>0x7e)_ch='0';
 	iret;
 }
+	// irq_handler(n); \
+	// end_interrupt(n); \
 
+#define HANDLE(n) \
+	asm volatile("cli"); \
+	asm volatile("push %ebp"); \
+	asm volatile("pop %ebp"); \
+	asm volatile("sti"); \
+	asm volatile("iret");
 
+void irq0() {HANDLE(0);}

@@ -1,6 +1,6 @@
 GCC_ROOT = /usr/local/bin
-CC = $(GCC_ROOT)/i386-elf-gcc
-LD = $(GCC_ROOT)/i386-elf-ld
+CC = $(GCC_ROOT)/x86_64-elf-gcc
+LD = $(GCC_ROOT)/x86_64-elf-ld
 STRIP = $(GCC_ROOT)/i386-elf-strip
 SRC = src/io.c src/kernel.c src/kbd.c src/vga.c
 #boot
